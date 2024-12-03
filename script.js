@@ -4,8 +4,7 @@ function onScanSuccess(decodedText) {
   const divEstado = document.getElementById("status");
   const apiUrl = `https://674ef8f4bb559617b26d7b3b.mockapi.io/accesos/codigos/${decodedText}`;
 
-  const beep = new Audio('bip.mp3');
-  beep.play();
+  window?.navigator?.vibrate?.(100);
 
   fetch(apiUrl)
     .then(response => {
@@ -22,7 +21,6 @@ function onScanSuccess(decodedText) {
         divEstado.textContent = `Acceso permitido: ${decodedText}`;
         divEstado.className = "valid";
 
-        // Esperar 2 segundos antes de enviar la solicitud PUT
         setTimeout(() => {
           fetch(apiUrl, {
             method: 'PUT',
