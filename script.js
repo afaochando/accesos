@@ -14,6 +14,20 @@ function onScanSuccess(decodedText) {
     .then(data => {
       divEstado.textContent = `Acceso permitido: ${decodedText}`;
       divEstado.className = "valid";
+
+      return fetch(apiUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ acceso: true, id: data.id })
+      });
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error al actualizar el acceso');
+      }
+      console.log(`Acceso actualizado para el código: ${decodedText}`);
     })
     .catch(error => {
       if (error.message === 'Not found') {
