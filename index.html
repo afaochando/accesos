@@ -5,34 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestión de Acceso - QR</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
-    #reader {
-      width: 290px;
-      margin: 10px auto;
-    }
-    #status {
-      font-size: 1.2em;
-      margin: 20px;
-      color: white;
-      padding: 10px;
-      border-radius: 5px;
-    }
-    .valid {
-      background-color: #4caf50;
-    }
-    .invalid {
-      background-color: #f44336;
-    }
-    .logo {
-      margin-top: 20px;
-    }
-  </style>
+  <script src="script.js"></script>
+  <link rel="stylesheet" href="estilos.css">
+
 </head>
 <body>
   <div class="logo">
@@ -41,39 +16,6 @@
   <p>Fiesta Navidad AFA Ochando</p>
   <div id="reader"></div>
   <div id="status"></div>
-
-  <script>
-    const validCodes = ["69abd4abf577d7cfd6d370f146611fea", "XYZ789", "123456"]; 
-
-    function onScanSuccess(decodedText) {
-      const statusDiv = document.getElementById("status");
-      if (validCodes.includes(decodedText)) {
-        statusDiv.textContent = `Acceso permitido: ${decodedText}`;
-        statusDiv.className = "valid";
-      } else {
-        statusDiv.textContent = `Acceso denegado: ${decodedText}`;
-        statusDiv.className = "invalid";
-      }
-    }
-
-    function onScanFailure(error) {
-      console.warn(`Error al escanear: ${error}`);
-    }
-
-    const html5QrCode = new Html5Qrcode("reader");
-
-    html5QrCode.start(
-      { facingMode: "environment" }, 
-      {
-        fps: 10, 
-        qrbox: { width: 250, height: 250 } 
-      },
-      onScanSuccess,
-      onScanFailure
-    ).catch(err => {
-      console.error("Error al iniciar el escaneo:", err);
-    });
-  </script>
 </body>
 </html>
 
