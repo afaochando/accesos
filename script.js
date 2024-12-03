@@ -4,10 +4,8 @@ function onScanSuccess(decodedText) {
   const divEstado = document.getElementById("status");
   const apiUrl = `https://674ef8f4bb559617b26d7b3b.mockapi.io/accesos/codigos/${decodedText}`;
 
-  // Hacer vibrar el móvil
-  if (navigator.vibrate) {
-    navigator.vibrate(200); // Vibrar durante 200ms
-  }
+  const beep = new Audio('bip.mp3');
+  beep.play();
 
   fetch(apiUrl)
     .then(response => {
