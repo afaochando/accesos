@@ -19,21 +19,25 @@ function onScanSuccess(decodedText) {
         divEstado.textContent = `Acceso permitido: ${decodedText}`;
         divEstado.className = "valid";
 
-        return fetch(apiUrl, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ acceso: true, id: data.id })
-        });
-      }
-    })
-    .then(response => {
-      if (response && !response.ok) {
-        throw new Error('Error al actualizar el acceso');
-      }
-      if (response) {
-        console.log(`Acceso actualizado para el código: ${decodedText}`);
+        // Esperar 2 segundos antes de enviar la solicitud PUT
+        setTimeout(() => {
+          fetch(apiUrl, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ acceso: true, id: data.id })
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error al actualizar el acceso');
+            }
+            console.log(`Acceso actualizado para el código: ${decodedText}`);
+          })
+          .catch(error => {
+            console.warn(`Error al actualizar el acceso: ${error}`);
+          });
+        }, 2000);
       }
     })
     .catch(error => {
