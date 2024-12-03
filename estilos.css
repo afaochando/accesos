@@ -21,6 +21,9 @@ body {
 .invalid {
   background-color: #f44336;
 }
+.previousAccess {
+    background-color: #ff6a19;
+  }
 .logo {
   margin-top: 20px;
 }

@@ -12,22 +12,29 @@ function onScanSuccess(decodedText) {
       return response.json();
     })
     .then(data => {
-      divEstado.textContent = `Acceso permitido: ${decodedText}`;
-      divEstado.className = "valid";
+      if (data.acceso) {
+        divEstado.textContent = `Ha accedido previamente: ${decodedText}`;
+        divEstado.className = "previousAccess";
+      } else {
+        divEstado.textContent = `Acceso permitido: ${decodedText}`;
+        divEstado.className = "valid";
 
-      return fetch(apiUrl, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ acceso: true, id: data.id })
-      });
+        return fetch(apiUrl, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ acceso: true, id: data.id })
+        });
+      }
     })
     .then(response => {
-      if (!response.ok) {
+      if (response && !response.ok) {
         throw new Error('Error al actualizar el acceso');
       }
-      console.log(`Acceso actualizado para el código: ${decodedText}`);
+      if (response) {
+        console.log(`Acceso actualizado para el código: ${decodedText}`);
+      }
     })
     .catch(error => {
       if (error.message === 'Not found') {
