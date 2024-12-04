@@ -1,0 +1,29 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+#reader {
+  width: 290px;
+  margin: 10px auto;
+}
+#status {
+  font-size: 1.2em;
+  margin: 20px;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
+.valid {
+  background-color: #4caf50;
+}
+.invalid {
+  background-color: #f44336;
+}
+.previousAccess {
+    background-color: #ff6a19;
+  }
+.logo {
+  margin-top: 20px;
+}
