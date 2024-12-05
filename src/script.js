@@ -7,19 +7,25 @@ const supabaseAnonKey =
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-const validCodes = [
-  "5f4dcc3b5aa765d61d8327deb882cf99",
-  "d41d8cd98f00b204e9800998ecf8427e",
-  "098f6bcd4621d373cade4e832627b4f6",
-  "e99a18c428cb38d5f260853678922e03",
-  "9d5ed678fe57bcca4bf1a6e1b3f1a47f",
-];
+let ultimoAcceso = null;
 
-function onScanSuccess(decodedText) {
+async function onScanSuccess(decodedText) {
+
+  if (ultimoAcceso == decodedText) {
+    return;
+  }
+
   const statusDiv = document.getElementById("status");
-  if (validCodes.includes(decodedText)) {
+  const acceso =  await getAccesoById(decodedText);
+
+  ultimoAcceso = decodedText;
+
+  if (acceso && acceso.id == decodedText && !acceso.acceso) {
     statusDiv.textContent = `Acceso permitido: ${decodedText}`;
     statusDiv.className = "valid";
+  } else if (acceso && acceso.id == decodedText && acceso.acceso) {
+    statusDiv.textContent = `Acceso previo: ${decodedText}`;
+    statusDiv.className = "previousAccess";
   } else {
     statusDiv.textContent = `Acceso denegado: ${decodedText}`;
     statusDiv.className = "invalid";
@@ -27,7 +33,7 @@ function onScanSuccess(decodedText) {
 }
 
 function onScanFailure(error) {
-  console.warn(`Error al escanear: ${error}`);
+
 }
 
 const html5QrCode = new Html5Qrcode("reader");
@@ -46,7 +52,7 @@ async function getAllEventos() {
   return data;
 }
 
-async function getEventoById(id) {
+async function getAccesoById(id) {
   const { data, error } = await supabase
     .from("afa_eventos_accesos")
     .select("*")
@@ -54,22 +60,21 @@ async function getEventoById(id) {
     .single();
 
   if (error) {
-    console.error("Error al obtener el evento:", error);
+    //console.error("Error al obtener el evento:", error);
     return null;
   }
 
   if (!data) {
-    console.log("No se encontró ningún evento con ese id");
+    //console.log("No se encontró ningún evento con ese id");
     return null;
   }
 
-  console.log("Evento obtenido:", data);
   return data;
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
   getAllEventos(); 
-  getEventoById("kjsdhfkajlsdhfajksdhfiuwoeyriuqweyriq3u45847365"); 
+  getAccesoById("kjsdhfkajlsdhfajksdhfiuwoeyriuqweyriq3u45847365"); 
 
   html5QrCode
     .start(
