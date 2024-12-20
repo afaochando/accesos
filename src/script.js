@@ -20,12 +20,15 @@ async function onScanSuccess(decodedText) {
   ultimoAcceso = decodedText;
 
   if (acceso && acceso.id == decodedText && !acceso.acceso) {
+    console.log(1);
     statusDiv.textContent = `Acceso permitido: ${decodedText}`;
     statusDiv.className = "valid";
   } else if (acceso && acceso.id == decodedText && acceso.acceso) {
+    console.log(2);
     statusDiv.textContent = `Acceso previo: ${decodedText}`;
     statusDiv.className = "previousAccess";
   } else {
+    console.log(3);
     statusDiv.textContent = `Acceso denegado: ${decodedText}`;
     statusDiv.className = "invalid";
   }
@@ -33,7 +36,7 @@ async function onScanSuccess(decodedText) {
   setTimeout(() => {
     statusDiv.textContent = "";
     statusDiv.className = "";
-  }, 700);
+  }, 1000);
 }
 
 function onScanFailure(error) {}
