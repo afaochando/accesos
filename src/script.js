@@ -10,13 +10,12 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 let ultimoAcceso = null;
 
 async function onScanSuccess(decodedText) {
-
   if (ultimoAcceso == decodedText) {
     return;
   }
 
   const statusDiv = document.getElementById("status");
-  const acceso =  await getAccesoById(decodedText);
+  const acceso = await getAccesoById(decodedText);
 
   ultimoAcceso = decodedText;
 
@@ -30,11 +29,14 @@ async function onScanSuccess(decodedText) {
     statusDiv.textContent = `Acceso denegado: ${decodedText}`;
     statusDiv.className = "invalid";
   }
+
+  setTimeout(() => {
+    statusDiv.textContent = "";
+    statusDiv.className = "";
+  }, 700);
 }
 
-function onScanFailure(error) {
-
-}
+function onScanFailure(error) {}
 
 const html5QrCode = new Html5Qrcode("reader");
 
@@ -73,9 +75,6 @@ async function getAccesoById(id) {
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  getAllEventos(); 
-  getAccesoById("kjsdhfkajlsdhfajksdhfiuwoeyriuqweyriq3u45847365"); 
-
   html5QrCode
     .start(
       { facingMode: "environment" },
